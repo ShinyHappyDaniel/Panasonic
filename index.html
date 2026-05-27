@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Face2Face - Instruktionsfilm M3-serien 26.05</title>
+    <title>Panasonic - Instruktionsfilm M3-serien 26.05</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;500;600;700;800;900&family=Red+Hat+Mono:wght@300;400;500;600;700&family=Red+Hat+Text:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -181,7 +181,7 @@
 <div id="loginScreen" class="login-screen">
     <div class="login-card">
         <div class="login-logo"><img src="./logo.png" alt="Shiny Happy People"></div>
-        <h1>Face2Face</h1>
+        <h1>Panasonic</h1>
         <p>Instruktionsfilm M3-serien 26.05</p>
         <div id="loginError" class="login-error"></div>
 
@@ -208,7 +208,7 @@
             <div class="header-logo"><img src="./logo.png" alt="Shiny Happy People"></div>
             <div class="header-user" id="userRoleLabel">ADMIN</div>
         </div>
-        <div class="header-main">Face2Face</div>
+        <div class="header-main">Panasonic</div>
         <div class="header-sub">Instruktionsfilm M3-serien 26.05</div>
         <div class="header-actions">
             <button class="btn-add" onclick="openAddModal()">+ Add Task</button>
@@ -318,13 +318,13 @@
 
 <script>
     const firebaseConfig = {
-        apiKey: "AIzaSyDSDTRxYPV5pKsIZm0BgvseZCWo28T8K_c",
-        authDomain: "face2face-4f5bf.firebaseapp.com",
-        projectId: "face2face-4f5bf",
-        storageBucket: "face2face-4f5bf.firebasestorage.app",
-        messagingSenderId: "77808605521",
-        appId: "1:77808605521:web:0d9daa7a504e733020db70",
-        measurementId: "G-Y9RPZPT7DQ"
+        apiKey: "AIzaSyB_KLRhMIiFlDKF67HeD9n8hOjlsiAlv-M",
+        authDomain: "panasonic-980c4.firebaseapp.com",
+        projectId: "panasonic-980c4",
+        storageBucket: "panasonic-980c4.firebasestorage.app",
+        messagingSenderId: "879187585636",
+        appId: "1:879187585636:web:dbfdfa67ff3cc174e64d71",
+        measurementId: "G-HGPBX6FGFS"
     };
 
     const NTFY_TOPIC = "shp-panasonic-instruktionsfilm-m3-serien-26.05";
@@ -645,7 +645,7 @@
         fetch("https://ntfy.sh/" + NTFY_TOPIC, {
             method: "POST",
             body: message,
-            headers: { "Title": "Face2Face Update", "Tags": "clipboard" }
+            headers: { "Title": "Panasonic Update", "Tags": "clipboard" }
         }).catch(() => {});
     }
 
