@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Face2Face - Instruktionsfilm M3-serien 26.05</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Red+Hat+Display:wght@300;500;600;700;800;900&family=Red+Hat+Mono:wght@300;400;500;600;700&family=Red+Hat+Text:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg-primary: #1B1318;
+            --bg-secondary: #211D1F;
+            --border: #3a2a32;
+            --header-bg: #7D2D49;
+            --pink: #FD89B3;
+            --text: #FFFFFF;
+            --muted: #6F6E6E;
+            --todo: #6F6E6E;
+            --inprogress: #FD89B3;
+            --done: #5dca8a;
+        }
+
+        body { background: var(--bg-primary); color: var(--text); font-family: 'Red Hat Text', sans-serif; font-size: 14px; line-height: 1.5; }
+
+        /* ===== LOGIN ===== */
+        .login-screen { min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+        .login-card { background: var(--bg-secondary); border: 1px solid var(--border); padding: 40px 30px; border-radius: 8px; text-align: center; max-width: 400px; width: 90%; }
+        .login-logo { margin-bottom: 24px; }
+        .login-logo img { height: 18px; opacity: 0.9; }
+        .login-card h1 { font-family: 'Red Hat Mono', monospace; font-size: 26px; font-weight: 300; margin-bottom: 8px; letter-spacing: 3px; text-transform: uppercase; }
+        .login-card p { color: var(--muted); margin-bottom: 28px; font-size: 13px; }
+        .login-error { color: #f07070; font-size: 12px; margin-bottom: 10px; min-height: 18px; }
+        .login-buttons { display: flex; flex-direction: column; gap: 12px; }
+        .btn-login { padding: 12px 20px; border: none; border-radius: 6px; font-family: 'Red Hat Mono', monospace; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 1px; }
+        .btn-admin { background: var(--header-bg); color: var(--text); }
+        .btn-admin:hover { background: var(--pink); color: var(--bg-primary); }
+        .btn-client { background: transparent; border: 2px solid var(--header-bg); color: #c07090; }
+        .btn-client:hover { background: var(--header-bg); color: var(--text); }
+        .login-step2 { display: none; }
+        .login-step2.active { display: block; }
+        .login-role-label { font-family: 'Red Hat Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--pink); margin-bottom: 14px; }
+        .pw-input { width: 100%; padding: 10px 12px; background: var(--bg-primary); border: 1px solid var(--border); color: var(--text); border-radius: 4px; font-family: 'Red Hat Text', sans-serif; font-size: 14px; margin-bottom: 12px; text-align: center; letter-spacing: 2px; }
+        .pw-input:focus { outline: none; border-color: var(--pink); }
+        .btn-submit-login { width: 100%; padding: 11px; background: var(--pink); color: var(--bg-primary); border: none; border-radius: 4px; font-family: 'Red Hat Mono', monospace; font-size: 13px; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; transition: all 0.2s; }
+        .btn-submit-login:hover { background: #ff9bc5; }
+        .btn-back-login { background: none; border: none; color: var(--muted); font-size: 12px; cursor: pointer; font-family: 'Red Hat Text', sans-serif; text-decoration: underline; }
+        .btn-back-login:hover { color: var(--pink); }
+
+        /* ===== STATUS PILLS ON CARD ===== */
+        .card-status-pills { display: flex; gap: 5px; margin-top: 10px; flex-wrap: wrap; }
+        .status-pill { padding: 3px 9px; border-radius: 20px; border: 1px solid var(--border); background: transparent; font-family: 'Red Hat Mono', monospace; font-size: 10px; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); transition: all 0.15s; }
+        .status-pill:hover { border-color: var(--pink); color: var(--pink); }
+        .status-pill.active-todo { border-color: var(--todo); color: var(--todo); background: rgba(111,110,110,0.12); }
+        .status-pill.active-inprogress { border-color: var(--inprogress); color: var(--inprogress); background: rgba(253,137,179,0.12); }
+        .status-pill.active-done { border-color: var(--done); color: var(--done); background: rgba(93,202,138,0.12); }
+
+        /* ===== APP ===== */
+        .app { max-width: 1400px; margin: 0 auto; padding: 20px; }
+
+        /* ===== HEADER ===== */
+        .header { margin-bottom: 20px; padding-bottom: 16px; border-bottom: 2px solid var(--pink); }
+        .header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+        .header-logo img { height: 16px; opacity: 0.85; }
+        .header-user { font-family: 'Red Hat Mono', monospace; font-size: 11px; background: var(--header-bg); padding: 5px 10px; border-radius: 4px; text-transform: uppercase; letter-spacing: 1px; }
+        .header-main { font-family: 'Red Hat Mono', monospace; font-size: 30px; font-weight: 300; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 2px; }
+        .header-sub { font-family: 'Red Hat Display', sans-serif; font-size: 16px; font-weight: 400; color: var(--muted); margin-bottom: 14px; }
+        .header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+        .btn-add { padding: 9px 16px; background: var(--pink); color: var(--bg-primary); border: none; border-radius: 4px; font-family: 'Red Hat Mono', monospace; font-size: 12px; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; }
+        .btn-add:hover { background: #ff9bc5; }
+        .btn-logout { padding: 9px 16px; background: transparent; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; font-family: 'Red Hat Mono', monospace; font-size: 12px; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; }
+        .btn-logout:hover { border-color: var(--pink); color: var(--pink); }
+
+        /* ===== SORT BAR ===== */
+        .sort-bar { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .sort-label { font-family: 'Red Hat Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: var(--muted); }
+        .sort-btn { padding: 5px 12px; background: transparent; border: 1px solid var(--border); color: var(--muted); border-radius: 4px; font-family: 'Red Hat Mono', monospace; font-size: 11px; cursor: pointer; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.5px; }
+        .sort-btn:hover { border-color: var(--pink); color: var(--pink); }
+        .sort-btn.active { border-color: var(--pink); color: var(--pink); background: rgba(253,137,179,0.08); }
+
+        /* ===== BOARD ===== */
+        .board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-bottom: 40px; }
+        .column { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 6px; padding: 16px; min-height: 300px; }
+        .column-header { font-family: 'Red Hat Mono', monospace; font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 14px; padding-bottom: 10px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+        .column-header.todo { color: var(--todo); }
+        .column-header.inprogress { color: var(--inprogress); }
+        .column-header.done { color: var(--done); }
+        .column-count { font-size: 11px; opacity: 0.7; }
+        .tasks-list { display: flex; flex-direction: column; gap: 10px; }
+
+        /* ===== TASK CARD ===== */
+        .task-card { background: var(--bg-primary); border: 1px solid var(--border); border-left: 3px solid var(--todo); border-radius: 4px; padding: 12px; cursor: pointer; transition: all 0.18s; }
+        .task-card.inprogress { border-left-color: var(--inprogress); }
+        .task-card.done { border-left-color: var(--done); }
+        .task-card:hover { border-color: var(--pink); transform: translateY(-1px); }
+        .task-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 8px; margin-bottom: 8px; }
+        .task-title { font-weight: 600; color: var(--text); flex: 1; word-break: break-word; font-size: 13px; }
+        .task-actions { display: flex; gap: 4px; flex-shrink: 0; }
+        .card-btn { width: 22px; height: 22px; border: none; border-radius: 3px; cursor: pointer; font-size: 11px; display: flex; align-items: center; justify-content: center; transition: all 0.15s; opacity: 0; }
+        .task-card:hover .card-btn { opacity: 1; }
+        .card-btn-edit { background: var(--header-bg); color: var(--text); }
+        .card-btn-edit:hover { background: var(--pink); color: var(--bg-primary); }
+        .card-btn-delete { background: #5a1a1a; color: #f07070; }
+        .card-btn-delete:hover { background: #f07070; color: white; }
+        .task-meta { display: flex; justify-content: space-between; align-items: center; gap: 6px; flex-wrap: wrap; }
+        .task-author { font-family: 'Red Hat Mono', monospace; font-size: 10px; background: var(--bg-secondary); padding: 2px 6px; border-radius: 2px; color: var(--muted); }
+        .task-date { font-family: 'Red Hat Mono', monospace; font-size: 10px; color: var(--muted); }
+        .task-comments-count { font-family: 'Red Hat Mono', monospace; font-size: 10px; background: var(--header-bg); padding: 2px 6px; border-radius: 2px; color: var(--text); }
+        .empty-col { text-align: center; color: var(--muted); padding: 30px 10px; font-size: 12px; }
+
+        /* ===== MODALS ===== */
+        .modal { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.75); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
+        .modal.active { display: flex; }
+        .modal-content { background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 24px; max-width: 500px; width: 100%; max-height: 88vh; overflow-y: auto; }
+        .modal-header { font-family: 'Red Hat Mono', monospace; font-size: 16px; font-weight: 700; margin-bottom: 20px; letter-spacing: 1px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; }
+        .modal-close { background: none; border: none; color: var(--muted); font-size: 20px; cursor: pointer; padding: 0 4px; line-height: 1; }
+        .modal-close:hover { color: var(--pink); }
+        .form-group { margin-bottom: 16px; }
+        .form-label { display: block; font-family: 'Red Hat Mono', monospace; font-size: 11px; font-weight: 600; margin-bottom: 6px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); }
+        .form-input, .form-textarea, .form-select { width: 100%; padding: 9px 11px; border: 1px solid var(--border); background: var(--bg-primary); color: var(--text); border-radius: 4px; font-family: 'Red Hat Text', sans-serif; font-size: 13px; resize: vertical; }
+        .form-textarea { min-height: 70px; }
+        .form-input:focus, .form-textarea:focus, .form-select:focus { outline: none; border-color: var(--pink); }
+        .form-actions { display: flex; gap: 10px; margin-top: 18px; }
+        .btn-primary { flex: 1; padding: 10px 16px; border: none; border-radius: 4px; background: var(--pink); color: var(--bg-primary); font-family: 'Red Hat Mono', monospace; font-size: 12px; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; }
+        .btn-primary:hover { background: #ff9bc5; }
+        .btn-secondary { flex: 1; padding: 10px 16px; background: transparent; color: var(--muted); border: 1px solid var(--border); border-radius: 4px; font-family: 'Red Hat Mono', monospace; font-size: 12px; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 1px; transition: all 0.2s; }
+        .btn-secondary:hover { border-color: var(--pink); color: var(--pink); }
+
+        /* ===== TASK DETAIL ===== */
+        .detail-title-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .detail-title-text { font-size: 16px; font-weight: 600; flex: 1; word-break: break-word; }
+        .btn-edit-title { background: var(--header-bg); border: none; color: var(--text); border-radius: 3px; padding: 3px 8px; font-size: 11px; font-family: 'Red Hat Mono', monospace; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s; white-space: nowrap; }
+        .btn-edit-title:hover { background: var(--pink); color: var(--bg-primary); }
+        .edit-title-form { display: none; gap: 8px; margin-bottom: 8px; }
+        .edit-title-form.active { display: flex; }
+        .edit-title-input { flex: 1; padding: 7px 10px; border: 1px solid var(--pink); background: var(--bg-primary); color: var(--text); border-radius: 4px; font-family: 'Red Hat Text', sans-serif; font-size: 14px; }
+        .edit-title-input:focus { outline: none; }
+        .btn-save-title { padding: 7px 12px; background: var(--pink); border: none; color: var(--bg-primary); border-radius: 4px; font-family: 'Red Hat Mono', monospace; font-size: 11px; font-weight: 600; cursor: pointer; text-transform: uppercase; white-space: nowrap; }
+        .btn-cancel-edit { padding: 7px 10px; background: transparent; border: 1px solid var(--border); color: var(--muted); border-radius: 4px; font-family: 'Red Hat Mono', monospace; font-size: 11px; cursor: pointer; text-transform: uppercase; white-space: nowrap; }
+        .detail-meta { display: flex; gap: 12px; font-size: 11px; color: var(--muted); margin-bottom: 16px; flex-wrap: wrap; }
+        .status-row { margin-bottom: 16px; padding-bottom: 16px; border-bottom: 1px solid var(--border); }
+
+        /* ===== COMMENTS ===== */
+        .comments-title { font-family: 'Red Hat Mono', monospace; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 10px; }
+        .comments-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; max-height: 280px; overflow-y: auto; }
+        .comment { background: var(--bg-primary); padding: 10px; border-radius: 4px; border-left: 2px solid var(--header-bg); }
+        .comment-author { font-family: 'Red Hat Mono', monospace; font-weight: 600; color: var(--pink); font-size: 10px; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .comment-text { color: var(--text); word-break: break-word; font-size: 13px; margin-bottom: 4px; }
+        .comment-time { font-size: 10px; color: var(--muted); }
+        .add-comment-form { display: flex; flex-direction: column; gap: 8px; }
+        .add-comment-textarea { width: 100%; padding: 8px 10px; border: 1px solid var(--border); background: var(--bg-primary); color: var(--text); border-radius: 4px; font-family: 'Red Hat Text', sans-serif; font-size: 13px; resize: vertical; min-height: 56px; }
+        .add-comment-textarea:focus { outline: none; border-color: var(--pink); }
+        .add-comment-button { padding: 8px 12px; background: var(--header-bg); color: var(--text); border: none; border-radius: 4px; font-family: 'Red Hat Mono', monospace; font-size: 11px; font-weight: 600; cursor: pointer; text-transform: uppercase; letter-spacing: 0.5px; transition: all 0.2s; }
+        .add-comment-button:hover { background: var(--pink); color: var(--bg-primary); }
+        .no-comments { font-size: 12px; color: var(--muted); text-align: center; padding: 16px; }
+
+        /* ===== NOTIFICATION SETUP ===== */
+        .ntfy-setup { background: rgba(253,137,179,0.08); border: 1px solid rgba(253,137,179,0.2); border-radius: 4px; padding: 14px; margin-top: 20px; font-size: 12px; }
+        .ntfy-setup h4 { font-family: 'Red Hat Mono', monospace; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; color: var(--pink); margin-bottom: 6px; }
+        .ntfy-setup p { color: var(--muted); line-height: 1.6; }
+        .ntfy-setup a { color: var(--pink); }
+        .ntfy-topic { font-family: 'Red Hat Mono', monospace; background: var(--bg-primary); padding: 4px 8px; border-radius: 3px; color: var(--text); font-size: 11px; display: inline-block; margin-top: 6px; }
+
+        @media (max-width: 900px) {
+            .board { grid-template-columns: 1fr; }
+            .header-main { font-size: 22px; }
+        }
+        @media (max-width: 480px) {
+            .app { padding: 12px; }
+            .modal-content { padding: 16px; }
+            .sort-bar { gap: 6px; }
+            .sort-btn { padding: 4px 8px; font-size: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="loginScreen" class="login-screen">
+    <div class="login-card">
+        <div class="login-logo"><img src="./logo.png" alt="Shiny Happy People"></div>
+        <h1>Face2Face</h1>
+        <p>Instruktionsfilm M3-serien 26.05</p>
+        <div id="loginError" class="login-error"></div>
+
+        <div id="loginStep1">
+            <div class="login-buttons">
+                <button class="btn-login btn-admin" onclick="selectRole('admin')">Admin Login</button>
+                <button class="btn-login btn-client" onclick="selectRole('client')">Client Login</button>
+            </div>
+        </div>
+
+        <div id="loginStep2" class="login-step2">
+            <div class="login-role-label" id="loginRoleLabel"></div>
+            <input type="password" id="pwInput" class="pw-input" placeholder="Password">
+            <button class="btn-submit-login" onclick="submitLogin()">Log in</button>
+            <button class="btn-back-login" onclick="backToStep1()">← Back</button>
+        </div>
+    </div>
+</div>
+
+<!-- APP -->
+<div id="appScreen" class="app" style="display:none;">
+    <div class="header">
+        <div class="header-top">
+            <div class="header-logo"><img src="./logo.png" alt="Shiny Happy People"></div>
+            <div class="header-user" id="userRoleLabel">ADMIN</div>
+        </div>
+        <div class="header-main">Face2Face</div>
+        <div class="header-sub">Instruktionsfilm M3-serien 26.05</div>
+        <div class="header-actions">
+            <button class="btn-add" onclick="openAddModal()">+ Add Task</button>
+            <button id="notifBtn" class="btn-logout" onclick="showNtfyInfo()" style="display:none;">Notifications</button>
+            <button class="btn-logout" onclick="logout()">Logout</button>
+        </div>
+    </div>
+
+    <div class="sort-bar">
+        <span class="sort-label">Sort:</span>
+        <button class="sort-btn active" id="sort-newest" onclick="setSort('newest')">Newest first</button>
+        <button class="sort-btn" id="sort-oldest" onclick="setSort('oldest')">Oldest first</button>
+        <button class="sort-btn" id="sort-az" onclick="setSort('az')">A–Z</button>
+        <button class="sort-btn" id="sort-za" onclick="setSort('za')">Z–A</button>
+    </div>
+
+    <div class="board">
+        <div class="column">
+            <div class="column-header todo">To Do <span class="column-count" id="count-todo"></span></div>
+            <div class="tasks-list" id="col-todo"></div>
+        </div>
+        <div class="column">
+            <div class="column-header inprogress">In Progress <span class="column-count" id="count-inprogress"></span></div>
+            <div class="tasks-list" id="col-inprogress"></div>
+        </div>
+        <div class="column">
+            <div class="column-header done">Done <span class="column-count" id="count-done"></span></div>
+            <div class="tasks-list" id="col-done"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ADD TASK MODAL -->
+<div id="addModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">New Task <button class="modal-close" onclick="closeAddModal()">×</button></div>
+        <div class="form-group">
+            <label class="form-label">Title</label>
+            <input id="newTitle" class="form-input" placeholder="Task title">
+        </div>
+        <div class="form-group">
+            <label class="form-label">Comment (optional)</label>
+            <textarea id="newComment" class="form-textarea" placeholder="Add a comment..."></textarea>
+        </div>
+        <div class="form-actions">
+            <button class="btn-primary" onclick="createTask()">Create Task</button>
+            <button class="btn-secondary" onclick="closeAddModal()">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- TASK DETAIL MODAL -->
+<div id="detailModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">Task <button class="modal-close" onclick="closeDetail()">×</button></div>
+
+        <div class="edit-title-form" id="editTitleForm">
+            <input id="editTitleInput" class="edit-title-input" placeholder="Task title">
+            <button class="btn-save-title" onclick="saveTitle()">Save</button>
+            <button class="btn-cancel-edit" onclick="cancelEditTitle()">Cancel</button>
+        </div>
+
+        <div class="detail-title-row" id="titleRow">
+            <div class="detail-title-text" id="detailTitle"></div>
+            <button class="btn-edit-title" onclick="startEditTitle()">Edit</button>
+        </div>
+        <div class="detail-meta">
+            <span id="detailAuthor"></span>
+            <span id="detailDate"></span>
+        </div>
+
+        <div class="status-row">
+            <label class="form-label">Status</label>
+            <select id="statusSelect" class="form-select" onchange="updateStatus()">
+                <option value="todo">To Do</option>
+                <option value="inprogress">In Progress</option>
+                <option value="done">Done</option>
+            </select>
+        </div>
+
+        <div class="comments-title">Comments</div>
+        <div class="comments-list" id="commentsList"></div>
+        <div class="add-comment-form">
+            <textarea id="commentInput" class="add-comment-textarea" placeholder="Add a comment..."></textarea>
+            <button class="add-comment-button" onclick="postComment()">Post Comment</button>
+        </div>
+    </div>
+</div>
+
+<!-- NTFY INFO MODAL -->
+<div id="ntfyModal" class="modal">
+    <div class="modal-content">
+        <div class="modal-header">Notifications <button class="modal-close" onclick="document.getElementById('ntfyModal').classList.remove('active')">×</button></div>
+        <div style="font-size:13px; color: var(--muted); line-height: 1.7;">
+            <p style="margin-bottom:12px;">You get a push notification every time the client makes a change.</p>
+            <p style="margin-bottom:12px;"><strong style="color:var(--text);">1.</strong> Install the free <a href="https://ntfy.sh" target="_blank" style="color:var(--pink);">ntfy app</a> on your phone (iOS or Android).</p>
+            <p style="margin-bottom:12px;"><strong style="color:var(--text);">2.</strong> Subscribe to this topic:</p>
+            <div class="ntfy-topic" id="ntfyTopicDisplay"></div>
+            <p style="margin-top:12px;"><strong style="color:var(--text);">3.</strong> Done. Any client action will ping you immediately.</p>
+        </div>
+    </div>
+</div>
+
+<!-- FIREBASE -->
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore-compat.js"></script>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyDSDTRxYPV5pKsIZm0BgvseZCWo28T8K_c",
+        authDomain: "face2face-4f5bf.firebaseapp.com",
+        projectId: "face2face-4f5bf",
+        storageBucket: "face2face-4f5bf.firebasestorage.app",
+        messagingSenderId: "77808605521",
+        appId: "1:77808605521:web:0d9daa7a504e733020db70",
+        measurementId: "G-Y9RPZPT7DQ"
+    };
+
+    const NTFY_TOPIC = "shp-panasonic-instruktionsfilm-m3-serien-26.05";
+    const COLLECTION = "panasonic_instruktionsfilm_m3-serien_26.05";
+
+    let db;
+    let currentRole = null;
+    let currentUser = null;
+    let currentTaskId = null;
+    let currentSort = "newest";
+    let allTasks = [];
+    let tasksUnsub = null;
+    let adminPass = "shp2026";
+    let clientPass = "pana123";
+
+    try {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+    } catch(e) {
+        console.error("Firebase init failed:", e);
+    }
+
+    // ===== AUTH =====
+    let pendingRole = null;
+
+    function selectRole(role) {
+        pendingRole = role;
+        document.getElementById("loginStep1").style.display = "none";
+        document.getElementById("loginStep2").classList.add("active");
+        document.getElementById("loginRoleLabel").textContent = role.toUpperCase() + " — enter password";
+        document.getElementById("pwInput").value = "";
+        document.getElementById("loginError").textContent = "";
+        setTimeout(() => document.getElementById("pwInput").focus(), 50);
+    }
+
+    function backToStep1() {
+        pendingRole = null;
+        document.getElementById("loginStep1").style.display = "block";
+        document.getElementById("loginStep2").classList.remove("active");
+        document.getElementById("loginError").textContent = "";
+    }
+
+    function submitLogin() {
+        const pw = document.getElementById("pwInput").value;
+        const correct = pendingRole === "admin" ? adminPass : clientPass;
+        if (pw === correct) {
+            currentRole = pendingRole;
+            currentUser = pendingRole === "admin" ? "SHP" : "Client";
+            sessionStorage.setItem("role", currentRole);
+            sessionStorage.setItem("user", currentUser);
+            enterApp();
+        } else {
+            const el = document.getElementById("loginError");
+            el.textContent = "Incorrect password";
+            document.getElementById("pwInput").value = "";
+            document.getElementById("pwInput").focus();
+            setTimeout(() => { el.textContent = ""; }, 3000);
+        }
+    }
+
+    function enterApp() {
+        document.getElementById("loginScreen").style.display = "none";
+        document.getElementById("appScreen").style.display = "block";
+        document.getElementById("userRoleLabel").textContent = currentRole.toUpperCase();
+        if (currentRole === "admin") {
+            document.getElementById("notifBtn").style.display = "inline-block";
+            document.getElementById("ntfyTopicDisplay").textContent = NTFY_TOPIC;
+        }
+        startListening();
+    }
+
+    function logout() {
+        sessionStorage.clear();
+        if (tasksUnsub) tasksUnsub();
+        allTasks = [];
+        currentRole = null;
+        currentUser = null;
+        document.getElementById("appScreen").style.display = "none";
+        document.getElementById("loginScreen").style.display = "flex";
+    }
+
+    function checkSession() {
+        const role = sessionStorage.getItem("role");
+        const user = sessionStorage.getItem("user");
+        if (role && user) { currentRole = role; currentUser = user; enterApp(); }
+    }
+
+    // ===== FIRESTORE =====
+    function startListening() {
+        if (!db) return;
+        tasksUnsub = db.collection(COLLECTION).onSnapshot((snap) => {
+            allTasks = [];
+            snap.forEach(doc => allTasks.push({ id: doc.id, ...doc.data() }));
+            renderBoard();
+        });
+    }
+
+    // ===== SORT =====
+    function setSort(mode) {
+        currentSort = mode;
+        document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById("sort-" + mode).classList.add('active');
+        renderBoard();
+    }
+
+    function sortedTasks(tasks) {
+        return [...tasks].sort((a, b) => {
+            if (currentSort === "newest") {
+                return toMs(b.created) - toMs(a.created);
+            } else if (currentSort === "oldest") {
+                return toMs(a.created) - toMs(b.created);
+            } else if (currentSort === "az") {
+                return a.title.localeCompare(b.title);
+            } else {
+                return b.title.localeCompare(a.title);
+            }
+        });
+    }
+
+    function toMs(val) {
+        if (!val) return 0;
+        if (val.toDate) return val.toDate().getTime();
+        return new Date(val).getTime();
+    }
+
+    // ===== RENDER =====
+    function renderBoard() {
+        const cols = { todo: [], inprogress: [], done: [] };
+        sortedTasks(allTasks).forEach(t => {
+            const s = t.status || "todo";
+            if (cols[s]) cols[s].push(t);
+        });
+
+        ["todo", "inprogress", "done"].forEach(s => {
+            const el = document.getElementById("col-" + s);
+            const count = document.getElementById("count-" + s);
+            el.innerHTML = "";
+            count.textContent = cols[s].length ? "(" + cols[s].length + ")" : "";
+            if (cols[s].length === 0) {
+                el.innerHTML = '<div class="empty-col">No tasks</div>';
+            } else {
+                cols[s].forEach(t => el.appendChild(makeCard(t)));
+            }
+        });
+    }
+
+    function makeCard(task) {
+        const div = document.createElement("div");
+        const s = task.status || "todo";
+        div.className = "task-card " + s;
+        const n = (task.comments || []).length;
+        const dateStr = relativeDate(toMs(task.created));
+
+        let adminBtns = "";
+        if (currentRole === "admin") {
+            adminBtns = `
+                <button class="card-btn card-btn-edit" title="Edit" onclick="event.stopPropagation(); openDetailForEdit('${task.id}')">✎</button>
+                <button class="card-btn card-btn-delete" title="Delete" onclick="event.stopPropagation(); deleteTask('${task.id}')">✕</button>`;
+        }
+
+        const statuses = [
+            { val: "todo", label: "To Do" },
+            { val: "inprogress", label: "In Progress" },
+            { val: "done", label: "Done" }
+        ];
+        const pillsHtml = statuses.map(st => {
+            const activeClass = s === st.val ? "active-" + st.val : "";
+            return `<button class="status-pill ${activeClass}" onclick="event.stopPropagation(); quickStatus('${task.id}','${st.val}')">${st.label}</button>`;
+        }).join("");
+
+        div.innerHTML = `
+            <div class="task-header">
+                <div class="task-title">${esc(task.title)}</div>
+                <div class="task-actions">${adminBtns}</div>
+            </div>
+            <div class="task-meta">
+                <span class="task-author">${task.author || ""}</span>
+                <span class="task-date">${dateStr}</span>
+                ${n > 0 ? `<span class="task-comments-count">${n} comment${n !== 1 ? "s" : ""}</span>` : ""}
+            </div>
+            <div class="card-status-pills">${pillsHtml}</div>`;
+        div.onclick = () => openDetail(task);
+        return div;
+    }
+
+    // ===== TASK CRUD =====
+    function createTask() {
+        const title = document.getElementById("newTitle").value.trim();
+        if (!title) { alert("Title is required"); return; }
+        const comment = document.getElementById("newComment").value.trim();
+        const comments = comment ? [{ author: currentUser, text: comment, created: new Date() }] : [];
+        db.collection(COLLECTION).add({
+            title, status: "todo", author: currentUser, created: new Date(), comments
+        }).then(() => {
+            closeAddModal();
+            notify("New task added: " + title);
+        });
+    }
+
+    function deleteTask(id) {
+        if (currentRole !== "admin") return;
+        if (!confirm("Delete this task?")) return;
+        db.collection(COLLECTION).doc(id).delete().then(() => closeDetail());
+    }
+
+    function updateStatus() {
+        if (!currentTaskId) return;
+        const newStatus = document.getElementById("statusSelect").value;
+        const task = allTasks.find(t => t.id === currentTaskId);
+        db.collection(COLLECTION).doc(currentTaskId).update({ status: newStatus }).then(() => {
+            notify("Status changed to \"" + newStatus + "\" on \"" + (task ? task.title : "") + "\"");
+        });
+    }
+
+    function quickStatus(taskId, newStatus) {
+        const task = allTasks.find(t => t.id === taskId);
+        if (!task || task.status === newStatus) return;
+        db.collection(COLLECTION).doc(taskId).update({ status: newStatus }).then(() => {
+            notify("Status changed to \"" + newStatus + "\" on \"" + (task ? task.title : "") + "\"");
+        });
+    }
+
+    // ===== EDIT TITLE =====
+    function startEditTitle() {
+        const task = allTasks.find(t => t.id === currentTaskId);
+        if (!task) return;
+        document.getElementById("editTitleInput").value = task.title;
+        document.getElementById("editTitleForm").classList.add("active");
+        document.getElementById("titleRow").style.display = "none";
+        document.getElementById("editTitleInput").focus();
+    }
+
+    function cancelEditTitle() {
+        document.getElementById("editTitleForm").classList.remove("active");
+        document.getElementById("titleRow").style.display = "flex";
+    }
+
+    function saveTitle() {
+        const newTitle = document.getElementById("editTitleInput").value.trim();
+        if (!newTitle) return;
+        db.collection(COLLECTION).doc(currentTaskId).update({ title: newTitle }).then(() => {
+            document.getElementById("detailTitle").textContent = newTitle;
+            cancelEditTitle();
+            notify("Task renamed to: " + newTitle);
+        });
+    }
+
+    // ===== COMMENTS =====
+    function postComment() {
+        const text = document.getElementById("commentInput").value.trim();
+        if (!text || !currentTaskId) return;
+        const task = allTasks.find(t => t.id === currentTaskId);
+        db.collection(COLLECTION).doc(currentTaskId).update({
+            comments: firebase.firestore.FieldValue.arrayUnion({ author: currentUser, text, created: new Date() })
+        }).then(() => {
+            document.getElementById("commentInput").value = "";
+            const updated = allTasks.find(t => t.id === currentTaskId);
+            if (updated) renderComments(updated.comments || []);
+            notify("Comment on: " + (task ? task.title : "") + " - " + text.substring(0, 60));
+        });
+    }
+
+    function renderComments(comments) {
+        const el = document.getElementById("commentsList");
+        el.innerHTML = "";
+        if (!comments.length) {
+            el.innerHTML = '<div class="no-comments">No comments yet</div>';
+            return;
+        }
+        comments.forEach(c => {
+            const d = document.createElement("div");
+            d.className = "comment";
+            const ts = c.created?.toDate ? c.created.toDate() : new Date(c.created);
+            d.innerHTML = `<div class="comment-author">${esc(c.author)}</div><div class="comment-text">${esc(c.text)}</div><div class="comment-time">${absDate(ts)}</div>`;
+            el.appendChild(d);
+        });
+        el.scrollTop = el.scrollHeight;
+    }
+
+    // ===== DETAIL MODAL =====
+    function openDetail(task) {
+        currentTaskId = task.id;
+        document.getElementById("detailTitle").textContent = task.title;
+        document.getElementById("detailAuthor").textContent = "By: " + (task.author || "");
+        document.getElementById("detailDate").textContent = absDate(new Date(toMs(task.created)));
+        document.getElementById("statusSelect").value = task.status || "todo";
+        document.getElementById("editTitleForm").classList.remove("active");
+        document.getElementById("titleRow").style.display = "flex";
+        renderComments(task.comments || []);
+        document.getElementById("commentInput").value = "";
+        document.getElementById("detailModal").classList.add("active");
+    }
+
+    function openDetailForEdit(id) {
+        const task = allTasks.find(t => t.id === id);
+        if (!task) return;
+        openDetail(task);
+        setTimeout(startEditTitle, 50);
+    }
+
+    function closeDetail() {
+        document.getElementById("detailModal").classList.remove("active");
+        currentTaskId = null;
+    }
+
+    // ===== ADD MODAL =====
+    function openAddModal() {
+        document.getElementById("newTitle").value = "";
+        document.getElementById("newComment").value = "";
+        document.getElementById("addModal").classList.add("active");
+        setTimeout(() => document.getElementById("newTitle").focus(), 50);
+    }
+    function closeAddModal() { document.getElementById("addModal").classList.remove("active"); }
+
+    // ===== NTFY NOTIFICATIONS =====
+    function notify(message) {
+        if (currentRole !== "client") return;
+        fetch("https://ntfy.sh/" + NTFY_TOPIC, {
+            method: "POST",
+            body: message,
+            headers: { "Title": "Face2Face Update", "Tags": "clipboard" }
+        }).catch(() => {});
+    }
+
+    function showNtfyInfo() { document.getElementById("ntfyModal").classList.add("active"); }
+
+    // ===== UTILS =====
+    function esc(str) {
+        if (!str) return "";
+        const d = document.createElement("div");
+        d.textContent = str;
+        return d.innerHTML;
+    }
+
+    function relativeDate(ms) {
+        if (!ms) return "";
+        const diff = Date.now() - ms;
+        const m = Math.floor(diff / 60000);
+        const h = Math.floor(m / 60);
+        const d = Math.floor(h / 24);
+        if (m < 1) return "just now";
+        if (m < 60) return m + "m ago";
+        if (h < 24) return h + "h ago";
+        if (d < 7) return d + "d ago";
+        return absDate(new Date(ms));
+    }
+
+    function absDate(date) {
+        if (!date) return "";
+        return date.toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
+    }
+
+    // ===== CLOSE ON BACKDROP =====
+    ["addModal", "detailModal", "ntfyModal"].forEach(id => {
+        document.getElementById(id).addEventListener("click", e => {
+            if (e.target.id === id) document.getElementById(id).classList.remove("active");
+        });
+    });
+
+    // Keyboard: Enter in password input submits
+    document.getElementById("pwInput").addEventListener("keydown", e => { if (e.key === "Enter") submitLogin(); });
+    // Keyboard: Enter in title input submits
+    document.getElementById("newTitle").addEventListener("keydown", e => { if (e.key === "Enter") createTask(); });
+    document.getElementById("editTitleInput").addEventListener("keydown", e => {
+        if (e.key === "Enter") saveTitle();
+        if (e.key === "Escape") cancelEditTitle();
+    });
+
+    window.addEventListener("load", checkSession);
+</script>
+</body>
+</html>
